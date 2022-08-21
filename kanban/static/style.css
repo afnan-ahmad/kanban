@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css?family=Inter:400,500,700");
+
+html, body, main {
+    height: 100%;
+}
+
+body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+.login-container {
+    height: 100%;
+}
+
+.board > .list {
+    min-height: 24em;
+    max-width: 24em;
+}
+
+.grey {
+    background-color: rgb(250, 250, 250)
+}
+
+.blue {
+    background-color: #2d8eff;
+}
+
+.blue-dark {
+    background-color: #141b41;
+}
+
+.blue-light {
+    background-color: #bcedf6;
+}
+
+.cyan {
+    background-color: #d1f5ff;
+}
+
+.space-grey {
+    background-color: #586f6b;
+}

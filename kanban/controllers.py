@@ -1,35 +1,13 @@
 from kanban import app
 from flask import request, flash, redirect, render_template
-
-loggedIn = False
+from flask_security import login_required, current_user
+from kanban.util import greeting_text
+from kanban.models import *
 
 
 @app.route('/', methods=['GET'])
+@login_required
 def index():
-    if loggedIn:
-        return render_template('index.html', title='Home', greeting='Good morning, Afnan')
-
-    return render_template('login.html', title='Login')
-
-
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.form['username']
-    password = request.form['password']
-
-    global loggedIn
-
-    loggedIn = username == 'afnan' and password == 'password'
-
-    if not loggedIn:
-        flash("Invalid username or password.")
-
-    return redirect('/')
-
-
-@app.route('/logout', methods=['POST'])
-def logout():
-    global loggedIn
-
-    loggedIn = False
-    return redirect('/')
+    greeting = greeting_text(current_user.name)
+    lists = List.query.filter(List.user_id == current_user.id).all()
+    return render_template('index.html', title='Home', greeting=greeting, lists=lists)

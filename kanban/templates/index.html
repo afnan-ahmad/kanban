@@ -1,26 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'layout/base.html' %}
+{% set overflow = 'overflow-hidden' %}
 
 {% block content %}
-    <div class="container-fluid pt-3 pb-3">
-        <div class="col col-3 mt-5 ms-3">
-            <h3 class="fw-bolder">{{ greeting }}</h3>
-        </div>
-    </div>
-    <div class="container-fluid board d-flex align-items-stretch">
-        {% for i in ['To Do', 'In Progress', 'Complete'] %}
-            <div class="flex-fill list me-3 rounded p-3">
-                <h5 class="fw-bolder pb-3 text-muted">
-                    {{ i }}
-                </h5>
-                <ul class="list-group">
-                    <li class="list-group-item card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Task {{ loop.index }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Due: Next week</h6>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        {% endfor %}
-    </div>
+    {% include 'partials/board.html' %}
 {% endblock %}

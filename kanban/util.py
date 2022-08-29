@@ -1,4 +1,9 @@
-from datetime import datetime
+from datetime import datetime, date
+from humanize import naturaldate, precisedelta
+
+
+def today():
+    return date.today()
 
 
 def greeting_text(name):
@@ -11,3 +16,10 @@ def greeting_text(name):
         greeting = 'Good evening'
 
     return f'{greeting}, {name}'
+
+
+def date_text(value, relative=False):
+    if relative:
+        return precisedelta(date.today() - value).capitalize()
+    else:
+        return naturaldate(value).capitalize()

@@ -2,5 +2,12 @@
 {% set overflow = 'overflow-hidden' %}
 
 {% block content %}
+    <div class="btn-group-sm mx-auto mx-md-3 my-1">
+        <a href="/list/create" class="btn btn-primary pe-3">
+            <i class="material-icons align-middle">add</i>
+            <span class="align-middle fw-bolder">Create list</span>
+        </a>
+    </div>
+
     {% include 'partials/board.html' %}
 {% endblock %}

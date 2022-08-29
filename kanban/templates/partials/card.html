@@ -1,0 +1,18 @@
+<li class="list-group-item card p-0 my-2 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex">
+            <span class="card-title w-75 fw-bolder">{{ card.title }}</span>
+            <span class="btn btn-link ms-auto p-0"><i class="material-icons">more_horiz</i></span>
+        </div>
+        {% if card.content %}
+            <p class="card-text m-0 mb-3">{{ card.content }}</p>
+        {% endif %}
+        {% if card.completed %}
+            <span class="badge text-bg-success">Completed</span>
+        {% elif util.today() > card.deadline %}
+            <span class="badge text-bg-warning">Overdue: {{ util.date_text(card.deadline, True) }}</span>
+        {% else %}
+            <span class="badge text-bg-light">Due: {{ util.date_text(card.deadline) }}</span>
+        {% endif %}
+    </div>
+</li>

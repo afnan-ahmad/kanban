@@ -1,20 +1,18 @@
-<div class="d-flex flex-column col col-12 col-md-3 m-3 px-2 pt-2 bg-alpha rounded">
+<div id="{{ list.id }}" class="d-flex flex-column col col-12 col-md-3 m-3 px-2 pt-2 bg-alpha rounded">
     <div class="d-flex align-items-center">
-        <span class="flex-grow-1 px-2 fw-bolder">{{ title }}</span>
+        <span class="flex-grow-1 px-2 fw-bolder">{{ list.name }}</span>
         <div class="btn-group">
-            <button type="button" class="btn btn-link">{% include 'icons/plus-circle.svg' %}</button>
-            <button type="button" class="btn btn-link">{% include 'icons/more-vertical.svg' %}</button>
+            <a href="{{ url_for('create_card', list=list.id) }}" class="btn btn-link shadow-none">
+                <i class="material-icons align-middle">add_circle_outline</i>
+            </a>
+            <a class="btn btn-link shadow-none">
+                <i class="material-icons align-middle">more_vert</i>
+            </a>
         </div>
     </div>
-    <ul class="list-group overflow-auto px-2 pb-2">
-        {% for i in range(10) %}
-            <li class="list-group-item card my-2 shadow-sm">
-                <div class="card-body p-1">
-                    <p class="card-title fw-bolder">Task {{ loop.index }}</p>
-                    <p class="card-text m-0">Some text that describes the task</p>
-                    <p class="card-link m-0 mt-2 text-muted">Due: Next week</p>
-                </div>
-            </li>
+    <ul class="list-group px-2 pb-2">
+        {% for card in list.cards %}
+            {% include 'partials/card.html' %}
         {% endfor %}
     </ul>
 </div>

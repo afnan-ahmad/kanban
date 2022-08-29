@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Inter:400,500,700");
-
 html, body {
     height: 100%;
 }
@@ -16,7 +14,7 @@ body {
     background-color: rgba(0, 0, 0, 0.04);
 }
 
-.board > .list-group {
+.board > .col > .list-group {
     overflow: hidden scroll;
 }
 

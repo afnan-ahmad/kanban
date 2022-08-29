@@ -6,7 +6,9 @@
         <div class="col-11 col-md-3 bg-body rounded shadow-sm p-4 mb-5">
             <h3 class="fw-bold">Register</h3>
             <p class="pb-1 text-muted">Already have an account? <a href="/login">Login</a></p>
-            {% if 'email' in register_user_form.errors %}
+            {% if 'name' in register_user_form.errors %}
+                {% set error_key = 'name' %}
+            {% elif 'email' in register_user_form.errors %}
                 {% set error_key = 'email' %}
             {% elif 'password' in register_user_form.errors %}
                 {% set error_key = 'password' %}

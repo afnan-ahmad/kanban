@@ -1,0 +1,41 @@
+<div class="dropdown">
+    <button class="btn btn-link p-0 shadow-none" data-bs-toggle="dropdown">
+        <i class="material-icons align-middle">more_horiz</i>
+    </button>
+    <form method="POST">
+        <input type="hidden" name="id" value="{{ card.id }}"/>
+        <ul class="dropdown-menu dropdown-menu-end position-fixed border-0 shadow">
+            <li>
+                <button class="dropdown-item" formaction="{{ url_for('toggle_card_status') }}">
+                    {% if not card.completed %}
+                        <i class="material-icons align-middle pe-2">done</i>
+                        Mark as Done
+                    {% else %}
+                        <i class="material-icons align-middle pe-2">history</i>
+                        Mark as Due
+                    {% endif %}
+                </button>
+            </li>
+            <li>
+                <button class="dropdown-item" formmethod="get" formaction="{{ url_for('edit_card') }}">
+                    <i class="material-icons align-middle pe-2">drive_file_rename_outline</i>
+                    Edit
+                </button>
+            </li>
+            {% if current_user.lists | length > 1 %}
+                <li>
+                    <button class="dropdown-item" formmethod="get" formaction="{{ url_for('move_card') }}">
+                        <i class="material-icons align-middle pe-2">swap_horiz</i>
+                        Move
+                    </button>
+                </li>
+            {% endif %}
+            <li>
+                <button class="dropdown-item" formaction="{{ url_for('delete_card') }}">
+                    <i class="material-icons align-middle pe-2">delete_outline</i>
+                    Delete
+                </button>
+            </li>
+        </ul>
+    </form>
+</div>

@@ -6,16 +6,12 @@ body {
     font-family: Inter, Arial, Helvetica, sans-serif;
 }
 
-.bg-custom {
-    background-color: #FFFBE6;
-}
-
 .bg-alpha {
     background-color: rgba(0, 0, 0, 0.04);
 }
 
-.board > .col > .list-group {
-    overflow: hidden scroll;
+.board > .list > .list-group {
+    overflow: hidden auto;
 }
 
 @media (max-width: 576px) {
@@ -23,7 +19,7 @@ body {
         scroll-snap-type: x mandatory;
     }
 
-    .board > .col {
+    .board > .list {
         scroll-snap-align: center;
     }
 }

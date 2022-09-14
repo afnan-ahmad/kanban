@@ -16,7 +16,7 @@
                         {% elif field.type == 'SelectField' %}
                             {{ field(class='form-select') }}
                         {% else %}
-                            {{ field(class='form-control' + (' is-invalid' if form[field.name].errors else '') ) }}
+                            {{ field(class='form-control ' + ('is-invalid' if form[field.name].errors else '') ) }}
                         {% endif %}
                         <div class="invalid-feedback">
                             {{ form[field.name].errors[0] }}
@@ -25,7 +25,7 @@
                 {% endfor %}
                 <div class="text-end">
                     <a href="/" class="btn btn-secondary">Cancel</a>
-                    <input class="btn btn-primary" type="submit" value="{{ button_text }}"/>
+                    <button class="btn btn-primary">{{ primary_button_text }}</button>
                 </div>
             </form>
         </div>

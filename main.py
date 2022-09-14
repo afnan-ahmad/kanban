@@ -1,19 +1,22 @@
 import os
+
+from flask_security import Security, SQLAlchemyUserDatastore
+
 from kanban import app, config
 from kanban.database import db
 from kanban.models import User, Role
-from flask_security import Security, SQLAlchemyUserDatastore
 from kanban.forms import KanbanRegisterForm
+
 import kanban.util as util
 
 
 @app.context_processor
-def inject_util():
-    return {'util': util}
+def utility_functions():
+    return dict(util=util)
 
 
 if os.getenv('ENV', 'development') == 'production':
-    app.config.from_object(config.DefaultConfig)
+    app.config.from_object(config.ProductionConfig)
 else:
     app.config.from_object(config.DevelopmentConfig)
 

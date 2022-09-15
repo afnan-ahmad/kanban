@@ -69,7 +69,7 @@ class CardAPI(Resource):
 
         content = args.get('content')
 
-        if len(content) > CARD_CONTENT_MAX_LENGTH:
+        if content and (len(content) > CARD_CONTENT_MAX_LENGTH):
             raise CardContentError()
 
         deadline = args.get('deadline')
@@ -126,7 +126,7 @@ class CardAPI(Resource):
 
         content = args.get('content')
 
-        if len(content) > CARD_CONTENT_MAX_LENGTH:
+        if content and (len(content) > CARD_CONTENT_MAX_LENGTH):
             raise CardContentError()
 
         deadline = args.get('deadline')

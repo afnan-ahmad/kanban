@@ -1,6 +1,8 @@
 import os
 
 from flask_security import Security, SQLAlchemyUserDatastore
+from flask_jwt_extended import JWTManager
+from flask_restful import Api
 
 from kanban import app, config
 from kanban.database import db
@@ -22,8 +24,17 @@ else:
 
 db.init_app(app)
 
+jwt = JWTManager(app)
+api = Api(app)
+
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form=KanbanRegisterForm)
+
+from kanban.api import ListAPI, CardAPI, SummaryAPI
+
+api.add_resource(ListAPI, '/api/list/', '/api/list/<int:list_id>/')
+api.add_resource(CardAPI, '/api/card/', '/api/card/<int:card_id>/')
+api.add_resource(SummaryAPI, '/api/summary/', '/api/summary/<int:list_id>/')
 
 from kanban.controllers import *
 

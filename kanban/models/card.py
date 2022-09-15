@@ -18,8 +18,8 @@ def update_completed_date(context):
 class Card(db.Model):
     __tablename__ = 'card'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    content = db.Column(db.String, nullable=True)
+    title = db.Column(db.String(25), nullable=False)
+    content = db.Column(db.String(250), nullable=True)
     deadline = db.Column(db.Date, nullable=False)
     completed = db.Column(db.Boolean)
 

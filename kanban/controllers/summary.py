@@ -29,7 +29,7 @@ def summary():
         previous_week = date.today() - timedelta(days=7)
 
         x, y = [], []
-        for d in range(7):
+        for d in range(8):
             next_day = previous_week + timedelta(days=d)
             x.append(date_text(next_day))
 

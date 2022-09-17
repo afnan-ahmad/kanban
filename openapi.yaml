@@ -1,0 +1,488 @@
+openapi: 3.0.3
+info:
+  title: Kanban App
+  version: 1.0.0
+  description: >
+    <div>
+    Project for the Modern Application Development I course in IITM BS Degree programme.
+    <p>Created by: Afnan Ahmad (21F1003730@student.onlinedegree.iitm.ac.in)</p> 
+    <h3>How to use the REST API:</h3>
+    <ol> 
+    <li>Login (or register) as a user in the Kanban application.</li>
+    <li>Click on the user's name on the top-right corner. Click on API Access.</li>
+    <li>An API access token would be generated and displayed on the page.</li>
+    <li>You need to use this token in the Authorization header for making requests to the API.</li>
+    <li>The format for the header should be <code>Authorization: Bearer TOKEN</code></li>
+    <li>A token would be valid for 30 minutes from the time of generation after which it would expire.</li>
+    <li>Once a token is expired, it cannot be used to make requests to the API. You can generate another token by visiting the API Access page again.</li>
+    </ol>
+    </div>
+
+    <h3> Error Codes </h3> 
+    <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>List</td>
+        <td>ERROR-1001</td>
+        <td>List does not exist.</td>
+      </tr>
+      <tr>
+        <td>List</td>
+        <td>ERROR-1002</td>
+        <td>List ID is not specified.</td>
+      </tr>
+      <tr>
+        <td>List</td>
+        <td>ERROR-1003</td>
+        <td>A list with this name already exists.</td>
+      </tr>
+      <tr>
+        <td>List</td>
+        <td>ERROR-1004</td>
+        <td>List name should not exceed 25 characters.</td>
+      </tr>
+      <tr>
+        <td>Card</td>
+        <td>ERROR-2001</td>
+        <td>Card does not exist.</td>
+      </tr>
+      <tr>
+        <td>Card</td>
+        <td>ERROR-2002</td>
+        <td>Card ID is not specified.</td>
+      </tr>
+      <tr>
+        <td>Card</td>
+        <td>ERROR-2003</td>
+        <td>Card deadline should not be in the past if it is not completed.</td>
+      </tr>
+      <tr>
+        <td>Card</td>
+        <td>ERROR-2004</td>
+        <td>Card title should not exceed 25 characters.</td>
+      </tr>  
+      <tr>
+        <td>Card</td>
+        <td>ERROR-2005</td>
+        <td>Card content should not exceed 250 characters.</td>
+      </tr> 
+    </tbody>
+    </table>
+servers:
+  - url: http://localhost:5000
+    description: Local Server
+paths:
+  "/api/list":
+    get:
+      summary: Get all lists.
+      tags:
+        - list
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/list"
+                    - type: object
+                      required:
+                        - id
+                      properties:
+                        id:
+                          type: number
+                          description: List ID
+                          example: 1
+    post:
+      summary: Create a new list.
+      tags:
+        - list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/list"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/result"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  "/api/list/{id}":
+    get:
+      summary: Get a single list.
+      tags:
+        - list
+      parameters:
+        - in: path
+          name: id
+          description: List ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/list"
+                  - type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: number
+                        description: List ID
+                        example: 1
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      summary: Update an existing list.
+      tags:
+        - list
+      parameters:
+        - in: path
+          name: id
+          description: List ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/list"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/result"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      summary: Delete an existing list.
+      tags:
+        - list
+      parameters:
+        - in: path
+          name: id
+          description: List ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/result"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  "/api/card":
+    get:
+      summary: Get all cards.
+      tags:
+        - card
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/card"
+                    - type: object
+                      required:
+                        - id
+                      properties:
+                        id:
+                          type: number
+                          description: Card ID
+                          example: 1
+    post:
+      summary: Create a new card.
+      tags:
+        - card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/card"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/result"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  "/api/card/{id}":
+    get:
+      summary: Get a single card.
+      tags:
+        - card
+      parameters:
+        - in: path
+          name: id
+          description: Card ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/card"
+                  - type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: number
+                        description: Card ID
+                        example: 1
+
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      summary: Update an existing card.
+      tags:
+        - card
+      parameters:
+        - in: path
+          name: id
+          description: Card ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/card"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/result"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      summary: Delete an existing card.
+      tags:
+        - card
+      parameters:
+        - in: path
+          name: id
+          description: Card ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/result"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  "/api/summary":
+    get:
+      summary: Get summary for the board.
+      tags:
+        - summary
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_lists:
+                    type: number
+                    description: Total List Count
+                    example: 2
+
+  "/api/summary/{list_id}":
+    get:
+      summary: Get summary for a specific list.
+      tags:
+        - summary
+      parameters:
+        - in: path
+          name: list_id
+          description: List ID
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/summary"
+
+components:
+  schemas:
+    list:
+      type: object
+      properties:
+        name:
+          type: string
+          description: List Name
+          example: Todo
+    card:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Card Title
+          example: Some task
+        content:
+          type: string
+          description: Card Content
+          example: This is the task description.
+        deadline:
+          type: string
+          description: Card Deadline
+          example: 2022-08-15T00:00:00
+        completed:
+          type: boolean
+          description: Card Completed Flag
+          example: true
+        created_at:
+          type: string
+          description: Card Created Date
+          example: 2022-08-15T00:00:00
+        last_updated_at:
+          type: string
+          description: Card Last Updated Date
+          example: 2022-08-15T00:00:00
+        completed_on:
+          type: string
+          description: Card Completed On Date
+          example: 2022-08-15T00:00:00
+        list_id:
+          type: number
+          description: Card Parent List ID
+          example: 1
+    summary:
+      type: object
+      properties:
+        id:
+          type: number
+          description: List ID
+          example: 1
+        name:
+          type: string
+          description: List Name
+          example: Todo
+        total:
+          type: number
+          description: Total Task Count
+          example: 5
+        completed:
+          type: number
+          description: Completed Task Count
+          example: 3
+        overdue:
+          type: number
+          description: Overdue Task Count
+          example: 1
+    result:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Result Message
+    error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Error Code
+        error_message:
+          type: string
+          description: Error Message

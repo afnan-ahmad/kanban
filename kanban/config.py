@@ -19,6 +19,8 @@ class Config:
     SECURITY_REGISTERABLE = False
     SECURITY_SEND_REGISTER_EMAIL = False
 
+    WTF_CSRF_ENABLED = False
+
     DEBUG = False
 
 
@@ -36,6 +38,8 @@ class DevelopmentConfig(Config):
 
     SECURITY_REGISTERABLE = True
 
+    WTF_CSRF_ENABLED = False
+
     DEBUG = True
 
 
@@ -49,5 +53,7 @@ class ProductionConfig(Config):
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
     SECURITY_REGISTERABLE = True
+
+    WTF_CSRF_ENABLED = False
 
     DEBUG = False

@@ -1,5 +1,5 @@
 from flask_restful import Resource, fields, marshal_with, reqparse
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_security import auth_required, current_user
 
 from kanban.database import db
 from kanban.models import Card, List
@@ -42,10 +42,10 @@ card_parser.add_argument('completed', type=bool)
 
 
 class CardAPI(Resource):
-    @jwt_required()
+    @auth_required('token')
     @marshal_with(output_fields)
     def get(self, card_id=None):
-        user_id = get_jwt_identity()
+        user_id = current_user.id
 
         if not card_id:
             return Card.query.filter_by(user_id=user_id).all()
@@ -57,9 +57,10 @@ class CardAPI(Resource):
 
         return card
 
-    @jwt_required()
+    @auth_required('token')
+    @marshal_with(output_fields)
     def post(self):
-        user_id = get_jwt_identity()
+        user_id = current_user.id
 
         args = card_parser.parse_args()
         title = args.get('title')
@@ -96,11 +97,11 @@ class CardAPI(Resource):
 
         db.session.commit()
 
-        return {'message': 'Card has been created.'}, 201
+        return card, 201
 
-    @jwt_required()
+    @auth_required('token')
     def put(self, card_id=None):
-        user_id = get_jwt_identity()
+        user_id = current_user.id
 
         if not card_id:
             raise CardNotSpecifiedError()
@@ -149,9 +150,9 @@ class CardAPI(Resource):
 
         return {'message': 'Card has been updated.'}, 200
 
-    @jwt_required()
+    @auth_required('token')
     def delete(self, card_id=None):
-        user_id = get_jwt_identity()
+        user_id = current_user.id
 
         if not card_id:
             raise CardNotSpecifiedError()

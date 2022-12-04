@@ -1,0 +1,57 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+main:has(.board) {
+    overflow: hidden;
+}
+
+.bg-alpha {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.board > .list > .list-group {
+    overflow: hidden auto;
+}
+
+@media (max-width: 576px) {
+    .board {
+        scroll-snap-type: x mandatory;
+    }
+
+    .board > .list {
+        scroll-snap-align: center;
+    }
+}
+
+::-webkit-scrollbar {
+    height: 8px;
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.16);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, 0.20);
+}
+
+.list-group::-webkit-scrollbar-button {
+    background: transparent;
+    height: 4px;
+    width: 4px;
+}

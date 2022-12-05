@@ -18,7 +18,7 @@ CARD_FILED_NAMES = ['id', 'title', 'content', 'deadline', 'completed']
 
 @celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    # Executes every day at 6:30 pm.
+    # Runs every day at 6:30 pm.
     sender.add_periodic_task(
         crontab(hour=18, minute=30),
         daily_report.s(),

@@ -32,8 +32,8 @@ export default {
   name: 'LoginView',
   data() {
     return {
-      email: 'afnan@example.com',
-      password: 'Test@123',
+      email: 'user@example.com',
+      password: '123456',
       errors: [],
       loggingIn: false
     }

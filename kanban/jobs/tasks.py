@@ -57,7 +57,7 @@ def export_lists(user_id):
                          'name': lst.name,
                          'no_of_cards': len(lst.cards)})
 
-    send_email(user.email, '[Kanban] Board export completed', {
+    send_email(user.email, '[Kanban] Board export completed', csv={
         'data': output.getvalue(),
         'filename': 'kanban_export.csv'
     })
@@ -90,7 +90,7 @@ def export_cards(list_id):
                          'deadline': card.deadline,
                          'completed': card.completed})
 
-    send_email(user.email, '[Kanban] List export completed', {
+    send_email(user.email, '[Kanban] List export completed', csv={
         'data': output.getvalue(),
         'filename': 'kanban_list_export.csv'
     })
@@ -98,13 +98,14 @@ def export_cards(list_id):
     output.close()
 
 
-def send_email(to, subject, body, csv=None):
+def send_email(to, subject, body=None, csv=None):
     email = MIMEMultipart()
     email['From'] = SMTP_SENDER_ADDRESS
     email['To'] = to
     email['Subject'] = subject
 
-    email.attach(MIMEText(body, 'html'))
+    if body:
+        email.attach(MIMEText(body, 'html'))
 
     if csv:
         csv_part = MIMEText(csv['data'], 'csv')

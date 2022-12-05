@@ -1,5 +1,7 @@
 from .worker import *
 
+from celery.schedules import crontab
+
 from csv import DictWriter
 from io import StringIO
 
@@ -14,22 +16,24 @@ LIST_FIELD_NAMES = ['id', 'name', 'no_of_cards']
 CARD_FILED_NAMES = ['id', 'title', 'content', 'deadline', 'completed']
 
 
-def send_email(to, subject, csv):
-    email = MIMEMultipart()
-    email['From'] = SMTP_SENDER_ADDRESS
-    email['To'] = to
-    email['Subject'] = subject
+@celery.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    # Executes every day at 6:30 pm.
+    sender.add_periodic_task(
+        crontab(hour=18, minute=30),
+        daily_report.s(),
+    )
 
-    csv_part = MIMEText(csv['data'], 'csv')
-    csv_part.add_header('Content-Disposition', f"attachment; filename={csv['filename']}")
 
-    email.attach(csv_part)
+@celery.task
+def daily_report():
+    users = User.query.all()
 
-    s = SMTP(host=SMTP_HOST, port=SMTP_PORT)
-    s.login(SMTP_SENDER_ADDRESS, SMTP_SENDER_PASSWORD)
+    if not users:
+        return
 
-    s.send_message(email)
-    s.quit()
+    for user in users:
+        send_email(user.email, '[Kanban] Daily report', f'<b>{user.name}</b>')
 
 
 @celery.task
@@ -92,3 +96,24 @@ def export_cards(list_id):
     })
 
     output.close()
+
+
+def send_email(to, subject, body, csv=None):
+    email = MIMEMultipart()
+    email['From'] = SMTP_SENDER_ADDRESS
+    email['To'] = to
+    email['Subject'] = subject
+
+    email.attach(MIMEText(body, 'html'))
+
+    if csv:
+        csv_part = MIMEText(csv['data'], 'csv')
+        csv_part.add_header('Content-Disposition', f"attachment; filename={csv['filename']}")
+
+        email.attach(csv_part)
+
+    s = SMTP(host=SMTP_HOST, port=SMTP_PORT)
+    s.login(SMTP_SENDER_ADDRESS, SMTP_SENDER_PASSWORD)
+
+    s.send_message(email)
+    s.quit()

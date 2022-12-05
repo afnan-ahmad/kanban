@@ -11,6 +11,12 @@
         </button>
       </li>
       <li>
+        <button class="dropdown-item" @click="$emit('exportCards')">
+          <i class="material-icons align-middle pe-2">save</i>
+          Export
+        </button>
+      </li>
+      <li>
         <button class="dropdown-item" @click="$emit('deleteList')">
           <i class="material-icons align-middle pe-2">delete_outline</i>
           Delete

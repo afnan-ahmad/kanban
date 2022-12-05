@@ -1,14 +1,18 @@
-from kanban.database import db
+from kanban.database import Base
+
+from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship, backref
+
 from flask_security import UserMixin
 
 
-class User(db.Model, UserMixin):
+class User(Base, UserMixin):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    name = db.Column(db.String, nullable=False)
-    active = db.Column(db.Boolean)
+    id = Column(Integer, primary_key=True)
+    email = Column(String(255), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    name = Column(String, nullable=False)
+    active = Column(Boolean)
 
-    roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
-    lists = db.relationship('List', lazy=True)
+    roles = relationship('Role', secondary='roles_users', backref=backref('users', lazy='dynamic'))
+    lists = relationship('List', lazy=True)

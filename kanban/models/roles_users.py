@@ -1,8 +1,10 @@
-from kanban.database import db
+from kanban.database import Base
+
+from sqlalchemy import Column, Integer, ForeignKey
 
 
-class RolesUsers(db.Model):
+class RolesUsers(Base):
     __tablename__ = 'roles_users'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
-    role_id = db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
+    id = Column(Integer, primary_key=True)
+    user_id = Column('user_id', Integer, ForeignKey('user.id'))
+    role_id = Column('role_id', Integer, ForeignKey('role.id'))

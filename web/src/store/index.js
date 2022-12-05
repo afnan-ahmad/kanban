@@ -28,7 +28,36 @@ export default createStore({
         },
         'HIDE_DIALOG': function (context) {
             context.state.createUpdateDialog.shown = false
-        }
+        },
+        'REQUEST_JOB': async (context, job) => {
+            try {
+                const res = await fetch('http://localhost:5000/api/jobs', {
+                    method: 'POST',
+                    headers: {
+                        'Authentication-Token': context.rootState.user.authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(job)
+                })
+
+                const result = await res.json()
+
+                if (res.ok) {
+                    return {
+                        success: true
+                    }
+                } else {
+                    return {
+                        success: false,
+                        reason: result
+                    }
+                }
+            } catch {
+                return {
+                    success: false
+                }
+            }
+        },
     },
     modules: {
         user, list, card

@@ -6,7 +6,8 @@
         <button @click="createCard" class="btn btn-link shadow-none">
           <i class="material-icons align-middle">add_circle_outline</i>
         </button>
-        <kanban-list-menu :id="id" @edit-list="editList" @delete-list="deleteList"/>
+        <kanban-list-menu :id="id" @edit-list="editList"
+                          @delete-list="deleteList" @export-cards="exportCards"/>
       </div>
     </div>
     <ul class="list-group px-2 pb-2">
@@ -118,6 +119,25 @@ export default {
         } else {
           this.$store.dispatch('HIDE_DIALOG')
         }
+      }
+
+      this.$store.dispatch('SHOW_DIALOG', dialog)
+    },
+    exportCards() {
+      const dialog = {
+        title: 'Export cards',
+        message: 'All cards in this list will be exported into a CSV file. You will get an email with the file attached once it is ready.',
+        action_text: 'Export'
+      }
+
+      dialog.action = async () => {
+        await this.$store.dispatch('REQUEST_JOB',
+            {
+              job_name: 'export_cards',
+              list_id: this.$props.id
+            }
+        )
+        this.$store.dispatch('HIDE_DIALOG')
       }
 
       this.$store.dispatch('SHOW_DIALOG', dialog)

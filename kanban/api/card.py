@@ -1,7 +1,7 @@
 from flask_restful import Resource, fields, marshal_with, reqparse
 from flask_security import auth_required, current_user
 
-from kanban.database import db
+from kanban.database import db_session
 from kanban.models import Card, List
 
 from kanban.api.errors import *
@@ -95,7 +95,7 @@ class CardAPI(Resource):
 
         existing_list.cards.append(card)
 
-        db.session.commit()
+        db_session.commit()
 
         return card, 201
 
@@ -146,7 +146,7 @@ class CardAPI(Resource):
         card.deadline = deadline
         card.completed = completed
 
-        db.session.commit()
+        db_session.commit()
 
         return {'message': 'Card has been updated.'}, 200
 
@@ -162,7 +162,7 @@ class CardAPI(Resource):
         if not card:
             raise CardNotFoundError()
 
-        db.session.delete(card)
-        db.session.commit()
+        db_session.delete(card)
+        db_session.commit()
 
         return {'message': 'Card has been deleted.'}, 200

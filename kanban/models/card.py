@@ -1,4 +1,6 @@
-from kanban.database import db
+from kanban.database import Base
+
+from sqlalchemy import Column, Integer, String, Date, DateTime, Boolean, ForeignKey
 from sqlalchemy.sql import func
 from datetime import date
 
@@ -15,18 +17,18 @@ def update_completed_date(context):
             context.get_current_parameters()['completed_on'] = None
 
 
-class Card(db.Model):
+class Card(Base):
     __tablename__ = 'card'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(25), nullable=False)
-    content = db.Column(db.String(250), nullable=True)
-    deadline = db.Column(db.Date, nullable=False)
-    completed = db.Column(db.Boolean)
+    id = Column(Integer, primary_key=True)
+    title = Column(String(25), nullable=False)
+    content = Column(String(250), nullable=True)
+    deadline = Column(Date, nullable=False)
+    completed = Column(Boolean)
 
-    created_at = db.Column(db.DateTime, default=func.now())
-    last_updated_at = db.Column(db.DateTime, default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime, default=func.now())
+    last_updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    completed_on = db.Column(db.Date, default=update_completed_date, onupdate=update_completed_date)
+    completed_on = Column(Date, default=update_completed_date, onupdate=update_completed_date)
 
-    list_id = db.Column(db.Integer, db.ForeignKey('list.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    list_id = Column(Integer, ForeignKey('list.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)

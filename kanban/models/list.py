@@ -1,11 +1,14 @@
-from kanban.database import db
+from kanban.database import Base
+
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 
-class List(db.Model):
+class List(Base):
     __tablename__ = 'list'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25), nullable=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(25), nullable=False)
 
-    cards = db.relationship('Card', lazy=True)
+    cards = relationship('Card', lazy=True)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)

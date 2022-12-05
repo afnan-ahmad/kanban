@@ -1,9 +1,12 @@
-from kanban.database import db
+from kanban.database import Base
+
+from sqlalchemy import Column, Integer, String
+
 from flask_security import RoleMixin
 
 
-class Role(db.Model, RoleMixin):
+class Role(Base, RoleMixin):
     __tablename__ = 'role'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
-    description = db.Column(db.String(255))
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), unique=True)
+    description = Column(String(255))
